@@ -17,11 +17,17 @@ enum Screen {
 }
 
 class OrientationManager: ObservableObject  {
-    @Published var isHorizontalLock = true
+    @Published var isHorizontalLock = true {
+            didSet {
+                // При изменении isHorizontalLock уведомляем систему
+                DispatchQueue.main.async {
+                    UIViewController.attemptRotationToDeviceOrientation()
+                }
+            }
+        }
     
     static var shared: OrientationManager = .init()
 }
-
 
 struct RootView: View {
     @State private var status: LoaderStatus = .LOADING

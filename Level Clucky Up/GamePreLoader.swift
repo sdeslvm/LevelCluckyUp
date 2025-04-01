@@ -167,11 +167,10 @@ struct GameLoader_1E6704B4Overlay: View {
     @StateObject private var data: GameLoader_1E6704B4Model
 //    @ObservedObject private var orientationManager: OrientationManager = OrientationManager.shared
     private let stamp = "KEY_1E6704B4_77"
-    @AppStorage("horizontal") var horizontal = true
     
     init(data: GameLoader_1E6704B4Model) {
         _data = StateObject(wrappedValue: data)
-        horizontal = false
+       
         
     }
 
@@ -195,6 +194,9 @@ struct GameLoader_1E6704B4Overlay: View {
                 }
             }
             .frame(width: geometry.size.width, height: geometry.size.height)
+        }
+        .onAppear {
+            OrientationManager.shared.isHorizontalLock = false
         }
     }
 }
