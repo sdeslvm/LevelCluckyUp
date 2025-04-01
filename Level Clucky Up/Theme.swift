@@ -8,8 +8,49 @@ struct CardOption: Identifiable {
     let selectedImage: String
 }
 
+struct CustomModalView: View {
+    let message: String
+    let isPresented: Binding<Bool>
+    
+    var body: some View {
+        ZStack {
+            Color.black.opacity(0.3)
+                .edgesIgnoringSafeArea(.all)
+            
+            VStack(spacing: 20) {
+                Text(message)
+                    .font(.system(size: 20, weight: .medium))
+                    .multilineTextAlignment(.center)
+                    .foregroundColor(.white)
+                    .padding(.horizontal)
+                
+                Button(action: {
+                    isPresented.wrappedValue = false
+                }) {
+                    Text("OK")
+                        .font(.system(size: 18, weight: .semibold))
+                        .foregroundColor(.white)
+                        .frame(width: 120, height: 40)
+                        .background(Color.blue)
+                        .cornerRadius(20)
+                }
+            }
+            .padding(30)
+            .background(
+                RoundedRectangle(cornerRadius: 25)
+                    .fill(Color(red: 0.2, green: 0.2, blue: 0.3))
+                    .shadow(radius: 10)
+            )
+            .padding(.horizontal, 40)
+        }
+        .transition(.opacity)
+    }
+}
+
+
+
 struct StoreView: View {
-    @AppStorage("coinscore") var playerBalance: Int = 10
+    @StateObject private var balanceManager = BalanceManager.shared
     @AppStorage("ownedCards") private var ownedCards: String = "background1" // Используем строку для хранения карт
     @AppStorage("selectedCard") private var selectedCard: String = "firstCardSelected" // Выбранная карта
     @AppStorage("currentSelectedCloseCard") private var currentSelectedCloseCard: String = "background1" 
@@ -23,7 +64,7 @@ struct StoreView: View {
         CardOption(id: "thirdCard", buyImage: "thirdCardBuy", selectImage: "thirdCardSelect", closeImage: "background3", selectedImage: "thirdCardSelected")
     ]
     
-    private let cardPrice: Int = 0
+    private let cardPrice: Int = 100
     
 
     var body: some View {
@@ -40,6 +81,7 @@ struct StoreView: View {
                                     NavGuard.shared.currentScreen = .MENU
                                 }
                             Spacer()
+                            BalanceTemplate()
                         }
                         Spacer()
                     }
@@ -59,8 +101,10 @@ struct StoreView: View {
                                 }
                             }
                         }
-                        .alert(isPresented: $showAlert) {
-                            Alert(title: Text("Notification"), message: Text(alertMessage ?? ""), dismissButton: .default(Text("OK")))
+                        
+                        if showAlert {
+                            CustomModalView(message: alertMessage ?? "", isPresented: $showAlert)
+                                .animation(.easeInOut, value: showAlert)
                         }
                     }
             }
@@ -90,19 +134,17 @@ struct StoreView: View {
     
     private func handleCardAction(for card: CardOption) {
         if ownedCards.contains(card.closeImage) {
-            // Если карта уже куплена, просто выбираем её
             selectedCard = card.selectedImage
-            saveCurrentSelectedCloseCard(card.closeImage) // Сохраняем closeImage выбранной карты
-            alertMessage = "Card selected successfully!" // Сообщение об успешном выборе карты
-        } else if playerBalance >= cardPrice {
-            // Покупаем карту
-            playerBalance -= cardPrice
-            ownedCards += "," + card.closeImage // Добавляем карту в список
+            saveCurrentSelectedCloseCard(card.closeImage)
+            alertMessage = "Card selected successfully!"
+        } else if balanceManager.playerBalance >= cardPrice {
+            balanceManager.playerBalance -= cardPrice
+            ownedCards += "," + card.closeImage
             selectedCard = card.selectedImage
-            saveCurrentSelectedCloseCard(card.closeImage) // Сохраняем closeImage выбранной карты
-            alertMessage = "Card purchased successfully!" // Сообщение об успешной покупке карты
+            saveCurrentSelectedCloseCard(card.closeImage)
+            alertMessage = "Card purchased successfully!"
         } else {
-            alertMessage = "Not enough coins to buy this card!" // Сообщение о недостатке монет
+            alertMessage = "Not enough coins to buy this card!"
         }
         showAlert = true
     }

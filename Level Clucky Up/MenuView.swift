@@ -41,7 +41,7 @@ struct MenuView: View {
 
 
 struct BalanceTemplate: View {
-    @AppStorage("coinscore") var coinscore: Int = 10
+    @StateObject private var balanceManager = BalanceManager.shared
     
     var body: some View {
         ZStack {
@@ -51,7 +51,7 @@ struct BalanceTemplate: View {
                 .frame(width: 140, height: 70)
                 .overlay(
                     ZStack {
-                        Text("\(coinscore)")
+                        Text("\(balanceManager.playerBalance)")
                             .foregroundColor(.white)
                             .fontWeight(.heavy)
                             .font(.title3)
