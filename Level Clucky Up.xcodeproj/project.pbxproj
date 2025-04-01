@@ -10,22 +10,9 @@
 		638552912D945A1100A38837 /* Level Clucky Up.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Level Clucky Up.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
-/* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
-		63FAC1D52D9B682400055353 /* Exceptions for "Level Clucky Up" folder in "Level Clucky Up" target */ = {
-			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
-			membershipExceptions = (
-				"Level-Clucky-Up-Info.plist",
-			);
-			target = 638552902D945A1100A38837 /* Level Clucky Up */;
-		};
-/* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
-
 /* Begin PBXFileSystemSynchronizedRootGroup section */
 		638552932D945A1100A38837 /* Level Clucky Up */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
-			exceptions = (
-				63FAC1D52D9B682400055353 /* Exceptions for "Level Clucky Up" folder in "Level Clucky Up" target */,
-			);
 			path = "Level Clucky Up";
 			sourceTree = "<group>";
 		};
@@ -278,7 +265,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.0;
+				MARKETING_VERSION = 1.2;
 				PRODUCT_BUNDLE_IDENTIFIER = com.lickso.uppo;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
@@ -312,7 +299,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.0;
+				MARKETING_VERSION = 1.2;
 				PRODUCT_BUNDLE_IDENTIFIER = com.lickso.uppo;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
